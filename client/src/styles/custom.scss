@@ -1,0 +1,16 @@
+// custom.scss
+
+// Importe primeiro os arquivos do Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+// Depois adicione suas customizações
+$primary-color: #2c3e50;
+
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+.header {
+  background-color: $primary-color;
+  padding: 1rem;
+}
