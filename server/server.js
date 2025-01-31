@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const nodemailer = require('nodemailer')
+const path = require('path')
 
 const app = express()
 app.use(cors())
@@ -16,8 +17,11 @@ const transporter = nodemailer.createTransport({
   }
 })
 
+// Servir arquivos estáticos do React build
+app.use(express.static(path.join(__dirname, '../client/build')))
+
 // Rota de contato
-app.post('/send-email', async (req, res) => {
+app.post('/api/send-email', async (req, res) => {
   try {
     const { name, email, message } = req.body
 
@@ -34,6 +38,11 @@ app.post('/send-email', async (req, res) => {
     console.error(error)
     res.status(500).json({ error: 'Erro ao enviar mensagem' })
   }
+})
+
+// Rota fallback - DEVE vir DEPOIS de todas as outras rotas
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 
 const PORT = process.env.PORT || 5000
